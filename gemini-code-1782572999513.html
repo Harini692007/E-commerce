@@ -1,0 +1,380 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Atmosphere — Asynchronous Weather Portal</title>
+  <style>
+    /* ── Design Tokens ── */
+    :root {
+      --ink:       #1A1814;
+      --fog:       #F7F5F2;
+      --chalk:     #EDEAE5;
+      --iron:      #7A7570;
+      --clay:      #B87C5A;
+      --white:     #FFFFFF;
+
+      --font-display: 'Georgia', 'Times New Roman', serif;
+      --font-body:    system-ui, -apple-system, sans-serif;
+
+      --space-sm:  0.5rem;
+      --space-md:  1rem;
+      --space-lg:  2rem;
+      --space-xl:  4rem;
+
+      --radius:    4px;
+      --transition: 250ms ease;
+    }
+
+    /* ── Base Layer & Layout ── */
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    body {
+      font-family: var(--font-body);
+      background: var(--fog);
+      color: var(--ink);
+      line-height: 1.6;
+      padding: var(--space-xl) var(--space-md);
+      display: flex;
+      justify-content: center;
+    }
+
+    .dashboard-container {
+      width: 100%;
+      max-width: 600px;
+    }
+
+    header {
+      margin-bottom: var(--space-lg);
+      text-align: center;
+    }
+
+    h1 {
+      font-family: var(--font-display);
+      font-weight: normal;
+      font-size: 2.5rem;
+      letter-spacing: -0.01em;
+    }
+
+    h1 span { color: var(--clay); font-style: italic; }
+
+    /* ── Search Input Component ── */
+    .search-form {
+      display: flex;
+      gap: var(--space-sm);
+      margin-bottom: var(--space-lg);
+    }
+
+    .search-input {
+      flex: 1;
+      padding: 0.85rem 1.2rem;
+      border: 1px solid var(--chalk);
+      background: var(--white);
+      color: var(--ink);
+      font-size: 1rem;
+      border-radius: var(--radius);
+      font-family: inherit;
+    }
+
+    .search-input:focus {
+      outline: none;
+      border-color: var(--clay);
+    }
+
+    .btn-search {
+      background: var(--ink);
+      color: var(--white);
+      border: none;
+      padding: 0 1.5rem;
+      font-size: 0.9rem;
+      font-weight: 600;
+      text-transform: uppercase;
+      letter-spacing: 0.05em;
+      border-radius: var(--radius);
+      cursor: pointer;
+      transition: background var(--transition);
+    }
+
+    .btn-search:hover { background: #2d2a25; }
+
+    /* ── Main Data View Panel ── */
+    .weather-card {
+      background: var(--white);
+      border: 1px solid var(--chalk);
+      border-radius: var(--radius);
+      padding: var(--space-lg);
+      box-shadow: 0 10px 30px rgba(26,24,20,0.03);
+      position: relative;
+      min-height: 200px;
+    }
+
+    /* Card Utility States */
+    .hidden { display: none !important; }
+    
+    .loading-spinner {
+      text-align: center;
+      padding: var(--space-xl) 0;
+      color: var(--iron);
+      font-style: italic;
+    }
+
+    .error-display {
+      background: #fdf2f2;
+      border: 1px solid #f5c6cb;
+      color: #721c24;
+      padding: var(--space-md);
+      border-radius: var(--radius);
+      font-size: 0.95rem;
+    }
+
+    /* Weather Visual Presentation Layer */
+    .weather-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: flex-start;
+      border-bottom: 1px solid var(--chalk);
+      padding-bottom: var(--space-md);
+      margin-bottom: var(--space-md);
+    }
+
+    .location-name {
+      font-family: var(--font-display);
+      font-size: 1.8rem;
+      font-weight: normal;
+    }
+
+    .location-country {
+      font-size: 0.8rem;
+      text-transform: uppercase;
+      letter-spacing: 0.1em;
+      color: var(--iron);
+    }
+
+    .temp-display {
+      font-family: var(--font-display);
+      font-size: 3.5rem;
+      line-height: 1;
+      color: var(--ink);
+    }
+
+    .weather-grid {
+      display: grid;
+      grid-template-columns: repeat(2, 1fr);
+      gap: var(--space-md);
+    }
+
+    .metric-cell {
+      background: var(--fog);
+      padding: var(--space-md);
+      border-radius: var(--radius);
+    }
+
+    .metric-label {
+      font-size: 0.72rem;
+      text-transform: uppercase;
+      letter-spacing: 0.08em;
+      color: var(--iron);
+      margin-bottom: 2px;
+    }
+
+    .metric-value {
+      font-size: 1.25rem;
+      font-weight: 600;
+      color: var(--ink);
+    }
+  </style>
+</head>
+<body>
+
+  <div class="dashboard-container">
+    <header>
+      <h1>Atmosphere <span>Dashboard</span></h1>
+    </header>
+
+    <main>
+      <form id="search-form" class="search-form">
+        <input 
+          type="text" 
+          id="search-input" 
+          class="search-input" 
+          placeholder="Enter city name (e.g., Paris, Tokyo)..." 
+          required 
+          aria-label="City Name Input Search Field"
+        />
+        <button type="submit" class="btn-search">Search</button>
+      </form>
+
+      <div id="weather-card" class="weather-card">
+        
+        <div id="state-welcome" class="loading-spinner">
+          Enter a location above to gather live meteorological metrics.
+        </div>
+
+        <div id="state-loading" class="loading-spinner hidden">
+          Querying atmosphere network nodes...
+        </div>
+
+        <div id="state-error" class="error-display hidden"></div>
+
+        <div id="state-data" class="hidden">
+          <div class="weather-header">
+            <div>
+              <h2 id="ui-location" class="location-name">City Name</h2>
+              <p id="ui-country" class="location-country">Country Region</p>
+            </div>
+            <div id="ui-temp" class="temp-display">--°C</div>
+          </div>
+
+          <div class="weather-grid">
+            <div class="metric-cell">
+              <p class="metric-label">Apparent Temperature</p>
+              <p id="ui-apparent" class="metric-value">--°C</p>
+            </div>
+            <div class="metric-cell">
+              <p class="metric-label">Relative Humidity</p>
+              <p id="ui-humidity" class="metric-value">--%</p>
+            </div>
+            <div class="metric-cell">
+              <p class="metric-label">Wind Velocity</p>
+              <p id="ui-wind" class="metric-value">-- km/h</p>
+            </div>
+            <div class="metric-cell">
+              <p class="metric-label">Precipitation Chance</p>
+              <p id="ui-precipitation" class="metric-value">--%</p>
+            </div>
+          </div>
+        </div>
+
+      </div>
+    </main>
+  </div>
+
+  <script>
+    const WeatherDashboard = {
+      init() {
+        this.cacheDOM();
+        this.bindEvents();
+      },
+
+      cacheDOM() {
+        this.form = document.getElementById('search-form');
+        this.input = document.getElementById('search-input');
+        
+        // Window UI Switch View States
+        this.stateWelcome = document.getElementById('state-welcome');
+        this.stateLoading = document.getElementById('state-loading');
+        this.stateError = document.getElementById('state-error');
+        this.stateData = document.getElementById('state-data');
+
+        // Target Value Text Outputs
+        this.uiLocation = document.getElementById('ui-location');
+        this.uiCountry = document.getElementById('ui-country');
+        this.uiTemp = document.getElementById('ui-temp');
+        this.uiApparent = document.getElementById('ui-apparent');
+        this.uiHumidity = document.getElementById('ui-humidity');
+        this.uiWind = document.getElementById('ui-wind');
+        this.uiPrecipitation = document.getElementById('ui-precipitation');
+      },
+
+      bindEvents() {
+        this.form.addEventListener('submit', this.handleSearch.bind(this));
+      },
+
+      async handleSearch(e) {
+        e.preventDefault();
+        const query = this.input.value.trim();
+        if (!query) return;
+
+        this.setViewState('loading');
+
+        try {
+          // Task Phase 1: Convert String location query to GeoCoordinates coordinates
+          const geoData = await this.geocodeCity(query);
+          
+          // Task Phase 2: Use parsed Geo-payload properties to resolve live metrics
+          const weatherData = await this.fetchMetrics(geoData.latitude, geoData.longitude);
+          
+          // Task Phase 3: Bind structural metrics payload to active layout view
+          this.renderMetrics(geoData, weatherData);
+        } catch (error) {
+          this.renderError(error.message);
+        }
+      },
+
+      /**
+       * Geocoding API Resolution Pipeline
+       */
+      async geocodeCity(cityName) {
+        const url = `https://geocoding-api.open-meteo.com/v1/search?name=${encodeURIComponent(cityName)}&count=1&language=en&format=json`;
+        
+        const response = await fetch(url);
+        if (!response.ok) {
+          throw new Error('Geocoding infrastructure transmission network offline.');
+        }
+
+        const data = await response.json();
+        
+        // Assert condition validation check for empty coordinate tables returned
+        if (!data.results || data.results.length === 0) {
+          throw new Error(`Location "${cityName}" could not be resolved safely.`);
+        }
+
+        return data.results[0]; // Extract highest matching coordinate item
+      },
+
+      /**
+       * Weather API Metric Resolution Engine
+       */
+      async fetchMetrics(lat, lon) {
+        const url = `https://api.open-meteo.com/v1/forecast?latitude=${lat}&longitude=${lon}&current=temperature_2m,relative_humidity_2m,apparent_temperature,precipitation,wind_speed_10m`;
+
+        const response = await fetch(url);
+        if (!response.ok) {
+          throw new Error('Atmosphere weather nodes reporting connection diagnostics error.');
+        }
+
+        return await response.json();
+      },
+
+      // ── UI Rendering Layers ──
+
+      renderMetrics(location, metrics) {
+        // Safe access extraction check of deep nested data keys mapping
+        const current = metrics.current;
+        if (!current) {
+          throw new Error('Weather data payload format structurally corrupt.');
+        }
+
+        // Apply visual mappings directly to verified targets
+        this.uiLocation.textContent = location.name;
+        this.uiCountry.textContent = `${location.admin1 || ''}, ${location.country || ''}`;
+        
+        this.uiTemp.textContent = `${Math.round(current.temperature_2m)}°C`;
+        this.uiApparent.textContent = `${Math.round(current.apparent_temperature)}°C`;
+        this.uiHumidity.textContent = `${current.relative_humidity_2m}%`;
+        this.uiWind.textContent = `${current.wind_speed_10m} km/h`;
+        this.uiPrecipitation.textContent = `${current.precipitation} mm`;
+
+        this.setViewState('data');
+      },
+
+      renderError(message) {
+        this.stateError.textContent = `⚠️ Error: ${message}`;
+        this.setViewState('error');
+      },
+
+      setViewState(activeState) {
+        this.stateWelcome.classList.add('hidden');
+        this.stateLoading.classList.add('hidden');
+        this.stateError.classList.add('hidden');
+        this.stateData.classList.add('hidden');
+
+        if (activeState === 'loading') this.stateLoading.classList.remove('hidden');
+        if (activeState === 'error') this.stateError.classList.remove('hidden');
+        if (activeState === 'data') this.stateData.classList.remove('hidden');
+      }
+    };
+
+    document.addEventListener('DOMContentLoaded', () => WeatherDashboard.init());
+  </script>
+</body>
+</html>
