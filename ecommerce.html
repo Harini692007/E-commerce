@@ -1,0 +1,1630 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="description" content="FORMA — Minimal furniture and objects for deliberate living. Free shipping on orders over $150." />
+  <meta name="keywords" content="furniture, home decor, minimal design, modern objects, handcrafted" />
+  <meta name="robots" content="index, follow" />
+  <meta name="author" content="FORMA Studio" />
+
+  <!-- Open Graph -->
+  <meta property="og:type" content="website" />
+  <meta property="og:title" content="FORMA — Objects for Deliberate Living" />
+  <meta property="og:description" content="Minimal furniture and home objects. Crafted to last." />
+  <meta property="og:url" content="https://forma.studio" />
+
+  <!-- Twitter Card -->
+  <meta name="twitter:card" content="summary_large_image" />
+  <meta name="twitter:title" content="FORMA — Objects for Deliberate Living" />
+  <meta name="twitter:description" content="Minimal furniture and home objects. Crafted to last." />
+
+  <title>FORMA — Objects for Deliberate Living</title>
+
+  <style>
+    /* ── Design Tokens ── */
+    :root {
+      --ink:       #1A1814;
+      --fog:       #F7F5F2;
+      --chalk:     #EDEAE5;
+      --iron:      #7A7570;
+      --clay:      #B87C5A;
+      --clay-dark: #96633E;
+      --white:     #FFFFFF;
+
+      --font-display: 'Georgia', 'Times New Roman', serif;
+      --font-body:    system-ui, -apple-system, 'Segoe UI', sans-serif;
+      --font-mono:    'Courier New', monospace;
+
+      --space-xs:  0.25rem;
+      --space-sm:  0.5rem;
+      --space-md:  1rem;
+      --space-lg:  2rem;
+      --space-xl:  4rem;
+      --space-2xl: 7rem;
+
+      --radius:    3px;
+      --transition: 200ms ease;
+      --max-w:     1200px;
+    }
+
+    /* ── Reset ── */
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    html { scroll-behavior: smooth; }
+    body {
+      font-family: var(--font-body);
+      background: var(--fog);
+      color: var(--ink);
+      line-height: 1.6;
+      font-size: 1rem;
+    }
+    img { display: block; max-width: 100%; }
+    a { color: inherit; }
+    ul, ol { list-style: none; }
+
+    /* ── Focus Visible ── */
+    :focus-visible {
+      outline: 2px solid var(--clay);
+      outline-offset: 3px;
+      border-radius: var(--radius);
+    }
+
+    /* ── Skip Link ── */
+    .skip-link {
+      position: absolute;
+      top: -100px;
+      left: var(--space-md);
+      z-index: 9999;
+      background: var(--clay);
+      color: var(--white);
+      padding: 0.6rem 1.2rem;
+      font-size: 0.875rem;
+      font-weight: 600;
+      text-decoration: none;
+      border-radius: var(--radius);
+      transition: top var(--transition);
+    }
+    .skip-link:focus { top: var(--space-md); }
+
+    /* ── Layout ── */
+    .container {
+      max-width: var(--max-w);
+      margin-inline: auto;
+      padding-inline: var(--space-lg);
+    }
+
+    /* ══════════════════════════════
+       HEADER / NAV
+    ══════════════════════════════ */
+    .site-header {
+      position: sticky;
+      top: 0;
+      z-index: 100;
+      background: rgba(247, 245, 242, 0.95);
+      backdrop-filter: blur(8px);
+      border-bottom: 1px solid var(--chalk);
+    }
+    .header-inner {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      height: 64px;
+    }
+    .site-logo {
+      font-family: var(--font-display);
+      font-size: 1.4rem;
+      font-weight: normal;
+      letter-spacing: 0.18em;
+      text-decoration: none;
+      color: var(--ink);
+    }
+    .site-logo span { color: var(--clay); }
+
+    .primary-nav { display: flex; align-items: center; gap: var(--space-xl); }
+    .nav-links { display: flex; gap: var(--space-lg); }
+    .nav-links a {
+      font-size: 0.8rem;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      text-decoration: none;
+      color: var(--iron);
+      transition: color var(--transition);
+    }
+    .nav-links a:hover, .nav-links a[aria-current="page"] { color: var(--ink); }
+
+    .nav-actions { display: flex; align-items: center; gap: var(--space-md); }
+    .btn-icon {
+      background: none;
+      border: none;
+      cursor: pointer;
+      padding: var(--space-sm);
+      border-radius: var(--radius);
+      color: var(--iron);
+      display: flex;
+      align-items: center;
+      gap: 6px;
+      font-size: 0.8rem;
+      letter-spacing: 0.05em;
+      transition: color var(--transition);
+    }
+    .btn-icon:hover { color: var(--ink); }
+    .cart-badge {
+      background: var(--clay);
+      color: var(--white);
+      border-radius: 50%;
+      width: 18px; height: 18px;
+      font-size: 0.65rem;
+      display: flex; align-items: center; justify-content: center;
+      font-weight: 700;
+    }
+
+    /* ══════════════════════════════
+       ANNOUNCEMENT BAR
+    ══════════════════════════════ */
+    .announcement-bar {
+      background: var(--ink);
+      color: var(--chalk);
+      text-align: center;
+      padding: 0.55rem;
+      font-size: 0.78rem;
+      letter-spacing: 0.07em;
+    }
+    .announcement-bar a { color: var(--clay); text-underline-offset: 3px; }
+
+    /* ══════════════════════════════
+       HERO
+    ══════════════════════════════ */
+    .hero {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      min-height: 88vh;
+      overflow: hidden;
+    }
+    .hero-content {
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      padding: var(--space-xl) var(--space-xl) var(--space-xl) var(--space-lg);
+    }
+    .hero-eyebrow {
+      font-family: var(--font-mono);
+      font-size: 0.7rem;
+      letter-spacing: 0.2em;
+      text-transform: uppercase;
+      color: var(--clay);
+      margin-bottom: var(--space-md);
+    }
+    .hero-headline {
+      font-family: var(--font-display);
+      font-size: clamp(2.8rem, 5vw, 5rem);
+      font-weight: normal;
+      line-height: 1.08;
+      color: var(--ink);
+      margin-bottom: var(--space-lg);
+    }
+    .hero-headline em {
+      font-style: italic;
+      color: var(--clay);
+    }
+    .hero-desc {
+      font-size: 1.05rem;
+      color: var(--iron);
+      max-width: 38ch;
+      margin-bottom: var(--space-xl);
+      line-height: 1.7;
+    }
+    .hero-ctas { display: flex; gap: var(--space-md); flex-wrap: wrap; }
+
+    /* ── Buttons ── */
+    .btn {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      padding: 0.85rem 1.75rem;
+      font-size: 0.8rem;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      text-decoration: none;
+      font-weight: 600;
+      border-radius: var(--radius);
+      cursor: pointer;
+      border: 1px solid transparent;
+      transition: background var(--transition), color var(--transition), border-color var(--transition);
+    }
+    .btn-primary {
+      background: var(--ink);
+      color: var(--white);
+    }
+    .btn-primary:hover { background: #2d2a25; }
+    .btn-outline {
+      background: transparent;
+      color: var(--ink);
+      border-color: var(--ink);
+    }
+    .btn-outline:hover { background: var(--ink); color: var(--white); }
+    .btn-clay {
+      background: var(--clay);
+      color: var(--white);
+      border-color: var(--clay);
+    }
+    .btn-clay:hover { background: var(--clay-dark); border-color: var(--clay-dark); }
+
+    .hero-image {
+      background: var(--chalk);
+      position: relative;
+      overflow: hidden;
+    }
+    .hero-image-inner {
+      width: 100%; height: 100%;
+      display: flex; align-items: center; justify-content: center;
+    }
+    /* SVG Illustration placeholder */
+    .hero-scene {
+      width: 100%; height: 100%; max-height: 88vh;
+    }
+
+    /* ══════════════════════════════
+       TRUST BAR
+    ══════════════════════════════ */
+    .trust-bar {
+      background: var(--chalk);
+      border-top: 1px solid #E0DDD8;
+      border-bottom: 1px solid #E0DDD8;
+      padding: var(--space-lg) 0;
+    }
+    .trust-items {
+      display: flex;
+      justify-content: center;
+      gap: var(--space-2xl);
+      flex-wrap: wrap;
+    }
+    .trust-item {
+      display: flex;
+      align-items: center;
+      gap: var(--space-sm);
+      font-size: 0.8rem;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      color: var(--iron);
+    }
+    .trust-icon { font-size: 1.1rem; }
+
+    /* ══════════════════════════════
+       SECTION HEADERS
+    ══════════════════════════════ */
+    .section-header {
+      display: flex;
+      align-items: flex-end;
+      justify-content: space-between;
+      margin-bottom: var(--space-xl);
+      gap: var(--space-md);
+    }
+    .section-label {
+      font-family: var(--font-mono);
+      font-size: 0.68rem;
+      letter-spacing: 0.2em;
+      text-transform: uppercase;
+      color: var(--clay);
+      margin-bottom: 0.5rem;
+    }
+    .section-title {
+      font-family: var(--font-display);
+      font-size: clamp(1.8rem, 3vw, 2.6rem);
+      font-weight: normal;
+      line-height: 1.15;
+      color: var(--ink);
+    }
+
+    /* ══════════════════════════════
+       PRODUCT GRID
+    ══════════════════════════════ */
+    .products-section { padding: var(--space-2xl) 0; }
+
+    .filter-bar {
+      display: flex;
+      gap: var(--space-sm);
+      margin-bottom: var(--space-xl);
+      flex-wrap: wrap;
+    }
+    .filter-btn {
+      background: none;
+      border: 1px solid var(--chalk);
+      padding: 0.45rem 1rem;
+      font-size: 0.75rem;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      border-radius: 99px;
+      cursor: pointer;
+      color: var(--iron);
+      transition: all var(--transition);
+    }
+    .filter-btn:hover, .filter-btn[aria-pressed="true"] {
+      background: var(--ink);
+      color: var(--white);
+      border-color: var(--ink);
+    }
+
+    .product-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+      gap: var(--space-lg);
+    }
+
+    .product-card {
+      background: var(--white);
+      border-radius: var(--radius);
+      overflow: hidden;
+      border: 1px solid var(--chalk);
+      transition: box-shadow var(--transition), transform var(--transition);
+    }
+    .product-card:hover {
+      box-shadow: 0 8px 32px rgba(26,24,20,0.1);
+      transform: translateY(-2px);
+    }
+    .product-card:focus-within { outline: 2px solid var(--clay); outline-offset: 2px; }
+
+    .product-image-wrap {
+      position: relative;
+      aspect-ratio: 4/3;
+      background: var(--chalk);
+      overflow: hidden;
+    }
+    .product-badge {
+      position: absolute;
+      top: var(--space-md);
+      left: var(--space-md);
+      background: var(--ink);
+      color: var(--white);
+      font-size: 0.65rem;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      padding: 0.25rem 0.6rem;
+      border-radius: var(--radius);
+    }
+    .product-badge.sale { background: var(--clay); }
+    .product-wishlist {
+      position: absolute;
+      top: var(--space-md);
+      right: var(--space-md);
+      background: rgba(247,245,242,0.9);
+      border: none;
+      border-radius: 50%;
+      width: 36px; height: 36px;
+      display: flex; align-items: center; justify-content: center;
+      cursor: pointer;
+      font-size: 1rem;
+      transition: background var(--transition);
+      backdrop-filter: blur(4px);
+    }
+    .product-wishlist:hover { background: var(--white); }
+
+    .product-thumb {
+      width: 100%; height: 100%;
+      display: flex; align-items: center; justify-content: center;
+      font-size: 4rem;
+      transition: transform 400ms ease;
+    }
+    .product-card:hover .product-thumb { transform: scale(1.04); }
+
+    .product-body { padding: var(--space-md) var(--space-md) var(--space-lg); }
+    .product-category {
+      font-size: 0.68rem;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+      color: var(--iron);
+      margin-bottom: var(--space-xs);
+    }
+    .product-name {
+      font-family: var(--font-display);
+      font-size: 1.15rem;
+      font-weight: normal;
+      margin-bottom: var(--space-sm);
+    }
+    .product-name a {
+      text-decoration: none;
+      color: var(--ink);
+    }
+    .product-name a:hover { color: var(--clay); }
+    .product-rating {
+      display: flex;
+      align-items: center;
+      gap: 6px;
+      margin-bottom: var(--space-md);
+      font-size: 0.78rem;
+      color: var(--iron);
+    }
+    .stars { color: var(--clay); letter-spacing: -1px; }
+    .product-footer {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: var(--space-sm);
+    }
+    .product-price { font-size: 1rem; font-weight: 600; }
+    .product-price .was {
+      font-weight: normal;
+      text-decoration: line-through;
+      color: var(--iron);
+      font-size: 0.85rem;
+      margin-left: 4px;
+    }
+    .btn-add {
+      background: var(--ink);
+      color: var(--white);
+      border: none;
+      padding: 0.55rem 1rem;
+      font-size: 0.72rem;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      border-radius: var(--radius);
+      cursor: pointer;
+      font-weight: 600;
+      transition: background var(--transition);
+      white-space: nowrap;
+    }
+    .btn-add:hover { background: #2d2a25; }
+
+    /* ══════════════════════════════
+       FEATURE STRIP
+    ══════════════════════════════ */
+    .feature-strip {
+      background: var(--ink);
+      color: var(--white);
+      padding: var(--space-2xl) 0;
+    }
+    .feature-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 1px;
+      background: #2d2a25;
+      border: 1px solid #2d2a25;
+    }
+    .feature-cell {
+      background: var(--ink);
+      padding: var(--space-xl);
+    }
+    .feature-num {
+      font-family: var(--font-display);
+      font-size: 4rem;
+      color: var(--clay);
+      line-height: 1;
+      margin-bottom: var(--space-md);
+    }
+    .feature-title {
+      font-family: var(--font-display);
+      font-size: 1.4rem;
+      font-weight: normal;
+      margin-bottom: var(--space-sm);
+    }
+    .feature-desc { color: #9A9590; font-size: 0.9rem; line-height: 1.7; max-width: 34ch; }
+
+    /* ══════════════════════════════
+       CATEGORIES
+    ══════════════════════════════ */
+    .categories-section { padding: var(--space-2xl) 0; }
+    .category-grid {
+      display: grid;
+      grid-template-columns: 2fr 1fr 1fr;
+      grid-template-rows: repeat(2, 280px);
+      gap: var(--space-md);
+    }
+    .category-card {
+      position: relative;
+      overflow: hidden;
+      border-radius: var(--radius);
+      background: var(--chalk);
+      display: flex;
+      align-items: flex-end;
+      padding: var(--space-lg);
+      text-decoration: none;
+      color: var(--ink);
+    }
+    .category-card:first-child { grid-row: 1 / 3; }
+    .category-bg {
+      position: absolute; inset: 0;
+      display: flex; align-items: center; justify-content: center;
+      font-size: 8rem;
+      opacity: 0.15;
+      transition: transform 500ms ease, opacity var(--transition);
+    }
+    .category-card:hover .category-bg { transform: scale(1.1); opacity: 0.25; }
+    .category-info {
+      position: relative;
+      z-index: 1;
+      background: rgba(247,245,242,0.92);
+      padding: var(--space-md) var(--space-lg);
+      border-radius: var(--radius);
+      backdrop-filter: blur(4px);
+    }
+    .category-name {
+      font-family: var(--font-display);
+      font-size: 1.2rem;
+      font-weight: normal;
+    }
+    .category-count { font-size: 0.75rem; color: var(--iron); margin-top: 2px; }
+
+    /* ══════════════════════════════
+       TESTIMONIALS
+    ══════════════════════════════ */
+    .testimonials-section {
+      background: var(--chalk);
+      padding: var(--space-2xl) 0;
+      border-top: 1px solid #E0DDD8;
+      border-bottom: 1px solid #E0DDD8;
+    }
+    .testimonial-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: var(--space-lg);
+      margin-top: var(--space-xl);
+    }
+    .testimonial-card {
+      background: var(--white);
+      padding: var(--space-xl);
+      border-radius: var(--radius);
+      border: 1px solid var(--chalk);
+    }
+    .testimonial-quote {
+      font-family: var(--font-display);
+      font-size: 1.1rem;
+      font-style: italic;
+      line-height: 1.6;
+      margin-bottom: var(--space-lg);
+      color: var(--ink);
+    }
+    .testimonial-author {
+      display: flex;
+      align-items: center;
+      gap: var(--space-md);
+    }
+    .author-avatar {
+      width: 44px; height: 44px;
+      border-radius: 50%;
+      background: var(--chalk);
+      display: flex; align-items: center; justify-content: center;
+      font-size: 1.3rem;
+      flex-shrink: 0;
+    }
+    .author-name { font-weight: 600; font-size: 0.9rem; }
+    .author-location { font-size: 0.75rem; color: var(--iron); }
+
+    /* ══════════════════════════════
+       NEWSLETTER
+    ══════════════════════════════ */
+    .newsletter-section {
+      padding: var(--space-2xl) 0;
+      text-align: center;
+    }
+    .newsletter-inner {
+      max-width: 560px;
+      margin-inline: auto;
+    }
+    .newsletter-title {
+      font-family: var(--font-display);
+      font-size: clamp(1.8rem, 3vw, 2.4rem);
+      font-weight: normal;
+      margin-bottom: var(--space-md);
+    }
+    .newsletter-desc { color: var(--iron); margin-bottom: var(--space-xl); }
+    .newsletter-form {
+      display: flex;
+      gap: var(--space-sm);
+      max-width: 440px;
+      margin-inline: auto;
+    }
+    .newsletter-form input[type="email"] {
+      flex: 1;
+      padding: 0.85rem 1rem;
+      border: 1px solid var(--chalk);
+      border-radius: var(--radius);
+      background: var(--white);
+      font-size: 0.9rem;
+      color: var(--ink);
+      font-family: inherit;
+    }
+    .newsletter-form input[type="email"]::placeholder { color: var(--iron); }
+    .newsletter-form input[type="email"]:focus { border-color: var(--clay); }
+    .newsletter-note { font-size: 0.75rem; color: var(--iron); margin-top: var(--space-md); }
+
+    /* ══════════════════════════════
+       CONTACT FORM
+    ══════════════════════════════ */
+    .contact-section {
+      background: var(--chalk);
+      padding: var(--space-2xl) 0;
+      border-top: 1px solid #E0DDD8;
+    }
+    .contact-grid {
+      display: grid;
+      grid-template-columns: 1fr 1.6fr;
+      gap: var(--space-2xl);
+      align-items: start;
+    }
+    .contact-info-title {
+      font-family: var(--font-display);
+      font-size: 1.8rem;
+      font-weight: normal;
+      margin-bottom: var(--space-md);
+    }
+    .contact-info-desc { color: var(--iron); margin-bottom: var(--space-xl); line-height: 1.7; }
+    .contact-details { display: flex; flex-direction: column; gap: var(--space-md); }
+    .contact-detail {
+      display: flex;
+      align-items: flex-start;
+      gap: var(--space-md);
+      font-size: 0.9rem;
+    }
+    .contact-detail-icon { font-size: 1.2rem; margin-top: 1px; flex-shrink: 0; }
+    .contact-detail-label { font-size: 0.7rem; letter-spacing: 0.1em; text-transform: uppercase; color: var(--iron); }
+    .contact-detail-value { font-weight: 500; }
+
+    .contact-form-card {
+      background: var(--white);
+      padding: var(--space-xl);
+      border-radius: var(--radius);
+      border: 1px solid #E0DDD8;
+    }
+    .form-title {
+      font-family: var(--font-display);
+      font-size: 1.3rem;
+      font-weight: normal;
+      margin-bottom: var(--space-lg);
+    }
+    .form-row { display: grid; grid-template-columns: 1fr 1fr; gap: var(--space-md); }
+    .form-group { display: flex; flex-direction: column; gap: 6px; margin-bottom: var(--space-md); }
+    .form-group label {
+      font-size: 0.75rem;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      font-weight: 600;
+      color: var(--iron);
+    }
+    .form-group .required { color: var(--clay); margin-left: 2px; }
+    .form-control {
+      padding: 0.75rem 1rem;
+      border: 1px solid var(--chalk);
+      border-radius: var(--radius);
+      background: var(--fog);
+      font-size: 0.9rem;
+      color: var(--ink);
+      font-family: inherit;
+      transition: border-color var(--transition);
+    }
+    .form-control:focus { border-color: var(--clay); outline: none; background: var(--white); }
+    .form-control::placeholder { color: #B8B4AE; }
+    textarea.form-control { resize: vertical; min-height: 120px; }
+    .form-select-wrap { position: relative; }
+    .form-select-wrap::after {
+      content: '▾';
+      position: absolute;
+      right: 1rem; top: 50%;
+      transform: translateY(-50%);
+      color: var(--iron);
+      pointer-events: none;
+      font-size: 0.8rem;
+    }
+    select.form-control { appearance: none; cursor: pointer; }
+    .form-checkbox-group { display: flex; align-items: flex-start; gap: var(--space-sm); margin-bottom: var(--space-lg); }
+    .form-checkbox-group input[type="checkbox"] {
+      width: 16px; height: 16px;
+      margin-top: 2px; flex-shrink: 0;
+      accent-color: var(--clay);
+    }
+    .form-checkbox-group label { font-size: 0.83rem; color: var(--iron); line-height: 1.5; }
+    .form-error-msg {
+      font-size: 0.75rem;
+      color: #c0392b;
+      margin-top: 4px;
+      display: none;
+    }
+    .form-group.error .form-control { border-color: #c0392b; }
+    .form-group.error .form-error-msg { display: block; }
+    .form-success {
+      display: none;
+      background: #edfaf1;
+      border: 1px solid #27ae60;
+      color: #1e8449;
+      padding: var(--space-md);
+      border-radius: var(--radius);
+      font-size: 0.9rem;
+      margin-top: var(--space-md);
+    }
+
+    /* ══════════════════════════════
+       FOOTER
+    ══════════════════════════════ */
+    .site-footer {
+      background: var(--ink);
+      color: #9A9590;
+      padding: var(--space-2xl) 0 var(--space-lg);
+    }
+    .footer-grid {
+      display: grid;
+      grid-template-columns: 2fr 1fr 1fr 1fr;
+      gap: var(--space-xl);
+      margin-bottom: var(--space-xl);
+    }
+    .footer-brand-name {
+      font-family: var(--font-display);
+      font-size: 1.5rem;
+      color: var(--white);
+      font-weight: normal;
+      letter-spacing: 0.15em;
+      margin-bottom: var(--space-md);
+    }
+    .footer-brand-name span { color: var(--clay); }
+    .footer-tagline { font-size: 0.85rem; line-height: 1.7; max-width: 28ch; margin-bottom: var(--space-lg); }
+    .social-links { display: flex; gap: var(--space-md); }
+    .social-link {
+      color: #9A9590;
+      font-size: 1.1rem;
+      text-decoration: none;
+      transition: color var(--transition);
+    }
+    .social-link:hover { color: var(--clay); }
+
+    .footer-col-title {
+      font-size: 0.7rem;
+      letter-spacing: 0.15em;
+      text-transform: uppercase;
+      color: var(--white);
+      margin-bottom: var(--space-md);
+      font-weight: 600;
+    }
+    .footer-links { display: flex; flex-direction: column; gap: var(--space-sm); }
+    .footer-links a {
+      font-size: 0.85rem;
+      text-decoration: none;
+      color: #9A9590;
+      transition: color var(--transition);
+    }
+    .footer-links a:hover { color: var(--white); }
+    .footer-divider { border: none; border-top: 1px solid #2d2a25; margin-bottom: var(--space-lg); }
+    .footer-bottom {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      gap: var(--space-md);
+      flex-wrap: wrap;
+      font-size: 0.78rem;
+    }
+    .footer-legal { display: flex; gap: var(--space-lg); }
+    .footer-legal a { color: #9A9590; text-decoration: none; }
+    .footer-legal a:hover { color: var(--white); }
+
+    /* ══════════════════════════════
+       CART DRAWER
+    ══════════════════════════════ */
+    .cart-overlay {
+      position: fixed; inset: 0;
+      background: rgba(26,24,20,0.5);
+      z-index: 200;
+      opacity: 0;
+      pointer-events: none;
+      transition: opacity var(--transition);
+    }
+    .cart-overlay.open { opacity: 1; pointer-events: all; }
+    .cart-drawer {
+      position: fixed;
+      top: 0; right: 0;
+      width: 400px; max-width: 100vw;
+      height: 100vh;
+      background: var(--fog);
+      z-index: 201;
+      transform: translateX(100%);
+      transition: transform 300ms ease;
+      display: flex; flex-direction: column;
+    }
+    .cart-drawer.open { transform: translateX(0); }
+    .cart-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: var(--space-lg);
+      border-bottom: 1px solid var(--chalk);
+    }
+    .cart-title { font-family: var(--font-display); font-size: 1.2rem; font-weight: normal; }
+    .cart-close {
+      background: none; border: none; cursor: pointer;
+      font-size: 1.4rem; color: var(--iron); padding: 4px;
+    }
+    .cart-body { flex: 1; overflow-y: auto; padding: var(--space-lg); }
+    .cart-empty { text-align: center; padding: var(--space-xl); color: var(--iron); }
+    .cart-footer { padding: var(--space-lg); border-top: 1px solid var(--chalk); }
+    .cart-subtotal { display: flex; justify-content: space-between; font-size: 0.9rem; margin-bottom: var(--space-md); }
+    .cart-subtotal strong { font-family: var(--font-display); font-size: 1.1rem; }
+
+    /* ══════════════════════════════
+       RESPONSIVE
+    ══════════════════════════════ */
+    @media (max-width: 900px) {
+      .hero { grid-template-columns: 1fr; }
+      .hero-image { aspect-ratio: 16/9; min-height: 40vw; }
+      .feature-grid { grid-template-columns: 1fr; }
+      .category-grid { grid-template-columns: 1fr 1fr; }
+      .category-card:first-child { grid-column: 1 / -1; grid-row: auto; }
+      .testimonial-grid { grid-template-columns: 1fr; }
+      .footer-grid { grid-template-columns: 1fr 1fr; }
+      .contact-grid { grid-template-columns: 1fr; }
+    }
+    @media (max-width: 600px) {
+      .container { padding-inline: var(--space-md); }
+      .nav-links { display: none; }
+      .hero-content { padding: var(--space-xl) var(--space-md); }
+      .category-grid { grid-template-columns: 1fr; }
+      .footer-grid { grid-template-columns: 1fr; }
+      .form-row { grid-template-columns: 1fr; }
+      .newsletter-form { flex-direction: column; }
+    }
+
+    /* ── Reduced Motion ── */
+    @media (prefers-reduced-motion: reduce) {
+      *, *::before, *::after { transition-duration: 0.01ms !important; animation-duration: 0.01ms !important; }
+    }
+  </style>
+</head>
+<body>
+
+  <!-- Skip Navigation -->
+  <a href="#main-content" class="skip-link">Skip to main content</a>
+
+  <!-- Announcement Bar -->
+  <div role="banner" aria-label="Promotional announcement">
+    <p class="announcement-bar">
+      Free shipping on orders over $150 — <a href="#products" aria-label="Shop the collection with free shipping">Shop the collection →</a>
+    </p>
+  </div>
+
+  <!-- ══ HEADER ══ -->
+  <header class="site-header" role="banner">
+    <div class="container">
+      <div class="header-inner">
+        <a href="/" class="site-logo" aria-label="FORMA — Home">FORM<span>A</span></a>
+
+        <nav class="primary-nav" aria-label="Primary navigation">
+          <ul class="nav-links" role="list">
+            <li><a href="#products" aria-current="page">Shop</a></li>
+            <li><a href="#categories">Collections</a></li>
+            <li><a href="#about">About</a></li>
+            <li><a href="#contact">Contact</a></li>
+          </ul>
+        </nav>
+
+        <div class="nav-actions">
+          <button class="btn-icon" aria-label="Search products">
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true">
+              <circle cx="11" cy="11" r="8"/><path d="m21 21-4.35-4.35"/>
+            </svg>
+            <span class="sr-only">Search</span>
+          </button>
+          <button class="btn-icon" aria-label="Account">
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true">
+              <circle cx="12" cy="8" r="4"/><path d="M4 20c0-4 3.6-7 8-7s8 3 8 7"/>
+            </svg>
+          </button>
+          <button class="btn-icon" id="cart-toggle" aria-label="Open shopping cart, 3 items" aria-expanded="false" aria-controls="cart-drawer">
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true">
+              <path d="M6 2 3 6v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2V6l-3-4z"/><line x1="3" y1="6" x2="21" y2="6"/><path d="M16 10a4 4 0 0 1-8 0"/>
+            </svg>
+            <span class="cart-badge" aria-hidden="true">3</span>
+          </button>
+        </div>
+      </div>
+    </div>
+  </header>
+
+  <!-- ══ MAIN ══ -->
+  <main id="main-content" tabindex="-1">
+
+    <!-- ── HERO ── -->
+    <section class="hero" aria-label="Featured campaign: New arrivals">
+      <div class="hero-content">
+        <p class="hero-eyebrow" aria-hidden="true">New Arrivals — Spring 2025</p>
+        <h1 class="hero-headline">
+          Objects for<br/><em>deliberate</em><br/>living
+        </h1>
+        <p class="hero-desc">
+          Furniture and objects made to last decades, not seasons.
+          Every piece is designed with restraint and crafted by hand.
+        </p>
+        <div class="hero-ctas">
+          <a href="#products" class="btn btn-primary">
+            Shop Collection
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" aria-hidden="true"><path d="M5 12h14m-7-7 7 7-7 7"/></svg>
+          </a>
+          <a href="#about" class="btn btn-outline">Our Story</a>
+        </div>
+      </div>
+      <div class="hero-image" aria-hidden="true">
+        <div class="hero-image-inner">
+          <!-- Decorative SVG room scene -->
+          <svg class="hero-scene" viewBox="0 0 600 560" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="Minimalist room with wooden furniture">
+            <!-- Floor -->
+            <rect x="0" y="380" width="600" height="180" fill="#DDD8D0"/>
+            <!-- Wall -->
+            <rect x="0" y="0" width="600" height="385" fill="#EAE6E0"/>
+            <!-- Baseboard -->
+            <rect x="0" y="375" width="600" height="10" fill="#CEC9C0"/>
+            <!-- Large window -->
+            <rect x="330" y="40" width="220" height="280" fill="#D6E8F0" rx="2"/>
+            <rect x="327" y="37" width="226" height="286" fill="none" stroke="#C0B8AE" stroke-width="4" rx="3"/>
+            <line x1="440" y1="37" x2="440" y2="323" stroke="#C0B8AE" stroke-width="3"/>
+            <line x1="327" y1="180" x2="553" y2="180" stroke="#C0B8AE" stroke-width="3"/>
+            <!-- Light beam from window -->
+            <polygon points="330,40 553,40 580,380 300,380" fill="rgba(255,255,220,0.12)"/>
+            <!-- Sofa -->
+            <rect x="50" y="290" width="280" height="90" fill="#C4B9AE" rx="4"/>
+            <rect x="40" y="265" width="300" height="35" fill="#B8ADA0" rx="4"/>
+            <rect x="40" y="265" width="18" height="115" fill="#B0A598" rx="2"/>
+            <rect x="322" y="265" width="18" height="115" fill="#B0A598" rx="2"/>
+            <!-- Sofa cushions -->
+            <rect x="58" y="273" width="80" height="20" fill="#CAC0B5" rx="3"/>
+            <rect x="150" y="273" width="80" height="20" fill="#CAC0B5" rx="3"/>
+            <rect x="242" y="273" width="72" height="20" fill="#CAC0B5" rx="3"/>
+            <!-- Sofa legs -->
+            <rect x="60" y="375" width="12" height="10" fill="#8C7B6A" rx="1"/>
+            <rect x="308" y="375" width="12" height="10" fill="#8C7B6A" rx="1"/>
+            <!-- Coffee table -->
+            <rect x="120" y="355" width="160" height="8" fill="#9C8872" rx="2"/>
+            <rect x="130" y="363" width="6" height="20" fill="#8C7B6A"/>
+            <rect x="270" y="363" width="6" height="20" fill="#8C7B6A"/>
+            <!-- Book on table -->
+            <rect x="155" y="348" width="50" height="8" fill="#7A8CA0" rx="1"/>
+            <!-- Plant pot -->
+            <ellipse cx="80" cy="360" rx="18" ry="8" fill="#8C7B6A"/>
+            <rect x="68" y="330" width="24" height="32" fill="#7A6A58" rx="2"/>
+            <!-- Plant leaves -->
+            <ellipse cx="75" cy="318" rx="12" ry="20" fill="#5A7A4A" transform="rotate(-20,75,318)"/>
+            <ellipse cx="90" cy="312" rx="10" ry="22" fill="#4A6A3A" transform="rotate(15,90,312)"/>
+            <ellipse cx="80" cy="308" rx="8" ry="18" fill="#6A8A5A"/>
+            <!-- Floor lamp -->
+            <rect x="285" y="180" width="4" height="200" fill="#8C8078"/>
+            <ellipse cx="287" cy="175" rx="30" ry="10" fill="#D4C8B8"/>
+            <line x1="257" y1="175" x2="317" y2="175" stroke="#8C8078" stroke-width="2"/>
+            <!-- Wall art -->
+            <rect x="115" y="60" width="130" height="165" fill="#E0DAD2" stroke="#C0B8AE" stroke-width="3" rx="2"/>
+            <!-- Abstract art inside frame -->
+            <circle cx="160" cy="130" r="35" fill="#B87C5A" opacity="0.5"/>
+            <rect x="175" y="95" width="50" height="80" fill="#1A1814" opacity="0.12" rx="40"/>
+            <line x1="115" y1="155" x2="245" y2="155" stroke="#C0B8AE" stroke-width="1" opacity="0.4"/>
+            <!-- Shelf -->
+            <rect x="330" y="340" width="170" height="8" fill="#9C8872" rx="2"/>
+            <!-- Small objects on shelf -->
+            <rect x="345" y="318" width="12" height="24" fill="#7A8CA0" rx="1"/>
+            <ellipse cx="375" cy="335" rx="10" ry="8" fill="#8C7B6A"/>
+            <rect x="390" y="325" width="8" height="16" fill="#B87C5A" rx="1"/>
+            <!-- Side table -->
+            <rect x="310" y="326" width="50" height="6" fill="#9C8872" rx="2"/>
+            <rect x="316" y="332" width="6" height="48" fill="#8C7B6A"/>
+            <rect x="348" y="332" width="6" height="48" fill="#8C7B6A"/>
+          </svg>
+        </div>
+      </div>
+    </section>
+
+    <!-- ── TRUST BAR ── -->
+    <div class="trust-bar" role="complementary" aria-label="Service highlights">
+      <div class="container">
+        <ul class="trust-items" role="list">
+          <li class="trust-item">
+            <span class="trust-icon" aria-hidden="true">✦</span>
+            <span>Free shipping over $150</span>
+          </li>
+          <li class="trust-item">
+            <span class="trust-icon" aria-hidden="true">✦</span>
+            <span>30-day returns</span>
+          </li>
+          <li class="trust-item">
+            <span class="trust-icon" aria-hidden="true">✦</span>
+            <span>Handcrafted in Europe</span>
+          </li>
+          <li class="trust-item">
+            <span class="trust-icon" aria-hidden="true">✦</span>
+            <span>2-year warranty</span>
+          </li>
+        </ul>
+      </div>
+    </div>
+
+    <!-- ── PRODUCTS ── -->
+    <section id="products" class="products-section" aria-labelledby="products-heading">
+      <div class="container">
+        <div class="section-header">
+          <div>
+            <p class="section-label" aria-hidden="true">Featured</p>
+            <h2 class="section-title" id="products-heading">New Arrivals</h2>
+          </div>
+          <a href="#" class="btn btn-outline">View all</a>
+        </div>
+
+        <!-- Filter -->
+        <div role="group" aria-label="Filter products by category" class="filter-bar">
+          <button class="filter-btn" aria-pressed="true">All</button>
+          <button class="filter-btn" aria-pressed="false">Seating</button>
+          <button class="filter-btn" aria-pressed="false">Tables</button>
+          <button class="filter-btn" aria-pressed="false">Storage</button>
+          <button class="filter-btn" aria-pressed="false">Lighting</button>
+          <button class="filter-btn" aria-pressed="false">Objects</button>
+        </div>
+
+        <ul class="product-grid" role="list">
+
+          <!-- Product 1 -->
+          <li class="product-card" role="listitem">
+            <div class="product-image-wrap">
+              <div class="product-thumb" aria-hidden="true">🪑</div>
+              <span class="product-badge" aria-label="New arrival">New</span>
+              <button class="product-wishlist" aria-label="Add Arc Chair to wishlist" aria-pressed="false">♡</button>
+            </div>
+            <div class="product-body">
+              <p class="product-category">Seating</p>
+              <h3 class="product-name"><a href="#" aria-label="Arc Lounge Chair — $680">Arc Lounge Chair</a></h3>
+              <div class="product-rating" aria-label="4.8 out of 5 stars, 24 reviews">
+                <span class="stars" aria-hidden="true">★★★★★</span>
+                <span>4.8 (24)</span>
+              </div>
+              <div class="product-footer">
+                <p class="product-price" aria-label="Price: $680">$680</p>
+                <button class="btn-add" aria-label="Add Arc Lounge Chair to cart">Add to cart</button>
+              </div>
+            </div>
+          </li>
+
+          <!-- Product 2 -->
+          <li class="product-card" role="listitem">
+            <div class="product-image-wrap">
+              <div class="product-thumb" aria-hidden="true">🪵</div>
+              <span class="product-badge sale" aria-label="On sale">Sale</span>
+              <button class="product-wishlist" aria-label="Add Slab Dining Table to wishlist" aria-pressed="false">♡</button>
+            </div>
+            <div class="product-body">
+              <p class="product-category">Tables</p>
+              <h3 class="product-name"><a href="#" aria-label="Slab Dining Table — $1,240, was $1,550">Slab Dining Table</a></h3>
+              <div class="product-rating" aria-label="4.9 out of 5 stars, 12 reviews">
+                <span class="stars" aria-hidden="true">★★★★★</span>
+                <span>4.9 (12)</span>
+              </div>
+              <div class="product-footer">
+                <p class="product-price" aria-label="Sale price: $1,240, original price: $1,550">$1,240 <span class="was">$1,550</span></p>
+                <button class="btn-add" aria-label="Add Slab Dining Table to cart">Add to cart</button>
+              </div>
+            </div>
+          </li>
+
+          <!-- Product 3 -->
+          <li class="product-card" role="listitem">
+            <div class="product-image-wrap">
+              <div class="product-thumb" aria-hidden="true">💡</div>
+              <button class="product-wishlist" aria-label="Add Column Floor Lamp to wishlist" aria-pressed="true" style="color: var(--clay)">♥</button>
+            </div>
+            <div class="product-body">
+              <p class="product-category">Lighting</p>
+              <h3 class="product-name"><a href="#" aria-label="Column Floor Lamp — $395">Column Floor Lamp</a></h3>
+              <div class="product-rating" aria-label="4.6 out of 5 stars, 38 reviews">
+                <span class="stars" aria-hidden="true">★★★★☆</span>
+                <span>4.6 (38)</span>
+              </div>
+              <div class="product-footer">
+                <p class="product-price" aria-label="Price: $395">$395</p>
+                <button class="btn-add" aria-label="Add Column Floor Lamp to cart">Add to cart</button>
+              </div>
+            </div>
+          </li>
+
+          <!-- Product 4 -->
+          <li class="product-card" role="listitem">
+            <div class="product-image-wrap">
+              <div class="product-thumb" aria-hidden="true">🏺</div>
+              <span class="product-badge" aria-label="New arrival">New</span>
+              <button class="product-wishlist" aria-label="Add Ceramic Vessel Set to wishlist" aria-pressed="false">♡</button>
+            </div>
+            <div class="product-body">
+              <p class="product-category">Objects</p>
+              <h3 class="product-name"><a href="#" aria-label="Ceramic Vessel Set — $120">Ceramic Vessel Set</a></h3>
+              <div class="product-rating" aria-label="5 out of 5 stars, 7 reviews">
+                <span class="stars" aria-hidden="true">★★★★★</span>
+                <span>5.0 (7)</span>
+              </div>
+              <div class="product-footer">
+                <p class="product-price" aria-label="Price: $120">$120</p>
+                <button class="btn-add" aria-label="Add Ceramic Vessel Set to cart">Add to cart</button>
+              </div>
+            </div>
+          </li>
+
+        </ul>
+      </div>
+    </section>
+
+    <!-- ── FEATURE STRIP ── -->
+    <section class="feature-strip" aria-labelledby="feature-heading">
+      <div class="container">
+        <h2 id="feature-heading" class="sr-only">Why FORMA</h2>
+        <div class="feature-grid" role="list">
+          <article class="feature-cell" role="listitem">
+            <p class="feature-num" aria-hidden="true">12+</p>
+            <h3 class="feature-title">Years of Craft</h3>
+            <p class="feature-desc">Every FORMA piece is the result of a long design process — never rushed to market, always refined until it's right.</p>
+          </article>
+          <article class="feature-cell" role="listitem">
+            <p class="feature-num" aria-hidden="true">03</p>
+            <h3 class="feature-title">Materials, Only</h3>
+            <p class="feature-desc">Oak, limestone, and hand-blown glass. We work with three materials and stay there — because mastery requires commitment.</p>
+          </article>
+          <article class="feature-cell" role="listitem">
+            <p class="feature-num" aria-hidden="true">0%</p>
+            <h3 class="feature-title">Plastic. Ever.</h3>
+            <p class="feature-desc">Not in the products, not in the packaging. We made this promise in 2013 and have kept it through every collection since.</p>
+          </article>
+          <article class="feature-cell" role="listitem">
+            <p class="feature-num" aria-hidden="true">∞</p>
+            <h3 class="feature-title">Repair Programme</h3>
+            <p class="feature-desc">Send any FORMA piece back to us, ever, and we will repair, restore, or take it back. Products should outlive their owners.</p>
+          </article>
+        </div>
+      </div>
+    </section>
+
+    <!-- ── CATEGORIES ── -->
+    <section id="categories" class="categories-section" aria-labelledby="categories-heading">
+      <div class="container">
+        <div class="section-header">
+          <div>
+            <p class="section-label" aria-hidden="true">Browse</p>
+            <h2 class="section-title" id="categories-heading">Shop by Collection</h2>
+          </div>
+        </div>
+        <nav aria-label="Product collections">
+          <ul class="category-grid" role="list">
+            <li><a href="#" class="category-card" aria-label="Seating — 24 pieces">
+              <div class="category-bg" aria-hidden="true">🪑</div>
+              <div class="category-info">
+                <p class="category-name">Seating</p>
+                <p class="category-count">24 pieces</p>
+              </div>
+            </a></li>
+            <li><a href="#" class="category-card" aria-label="Tables — 18 pieces">
+              <div class="category-bg" aria-hidden="true">🪵</div>
+              <div class="category-info">
+                <p class="category-name">Tables</p>
+                <p class="category-count">18 pieces</p>
+              </div>
+            </a></li>
+            <li><a href="#" class="category-card" aria-label="Lighting — 12 pieces">
+              <div class="category-bg" aria-hidden="true">💡</div>
+              <div class="category-info">
+                <p class="category-name">Lighting</p>
+                <p class="category-count">12 pieces</p>
+              </div>
+            </a></li>
+            <li><a href="#" class="category-card" aria-label="Storage — 9 pieces">
+              <div class="category-bg" aria-hidden="true">🗄️</div>
+              <div class="category-info">
+                <p class="category-name">Storage</p>
+                <p class="category-count">9 pieces</p>
+              </div>
+            </a></li>
+            <li><a href="#" class="category-card" aria-label="Objects — 31 pieces">
+              <div class="category-bg" aria-hidden="true">🏺</div>
+              <div class="category-info">
+                <p class="category-name">Objects</p>
+                <p class="category-count">31 pieces</p>
+              </div>
+            </a></li>
+          </ul>
+        </nav>
+      </div>
+    </section>
+
+    <!-- ── TESTIMONIALS ── -->
+    <section class="testimonials-section" aria-labelledby="testimonials-heading">
+      <div class="container">
+        <div style="text-align:center;">
+          <p class="section-label" aria-hidden="true">Reviews</p>
+          <h2 class="section-title" id="testimonials-heading">What customers say</h2>
+        </div>
+        <ul class="testimonial-grid" role="list">
+          <li>
+            <article class="testimonial-card">
+              <div class="product-rating" aria-label="5 out of 5 stars">
+                <span class="stars" aria-hidden="true">★★★★★</span>
+              </div>
+              <blockquote class="testimonial-quote">
+                "I've owned the Arc Chair for three years now. It's the first thing I bought that I will never replace. The quality speaks for itself every single day."
+              </blockquote>
+              <div class="testimonial-author">
+                <div class="author-avatar" aria-hidden="true">🙂</div>
+                <div>
+                  <p class="author-name">Marie L.</p>
+                  <p class="author-location">Berlin, Germany</p>
+                </div>
+              </div>
+            </article>
+          </li>
+          <li>
+            <article class="testimonial-card">
+              <div class="product-rating" aria-label="5 out of 5 stars">
+                <span class="stars" aria-hidden="true">★★★★★</span>
+              </div>
+              <blockquote class="testimonial-quote">
+                "Ordered the Slab dining table and it arrived in perfect condition, beautifully packed. It's become the centerpiece of our home. Worth every penny."
+              </blockquote>
+              <div class="testimonial-author">
+                <div class="author-avatar" aria-hidden="true">😊</div>
+                <div>
+                  <p class="author-name">James T.</p>
+                  <p class="author-location">London, UK</p>
+                </div>
+              </div>
+            </article>
+          </li>
+          <li>
+            <article class="testimonial-card">
+              <div class="product-rating" aria-label="5 out of 5 stars">
+                <span class="stars" aria-hidden="true">★★★★★</span>
+              </div>
+              <blockquote class="testimonial-quote">
+                "The repair programme alone tells you everything about this company. They stand behind what they make. That's very rare these days and it matters."
+              </blockquote>
+              <div class="testimonial-author">
+                <div class="author-avatar" aria-hidden="true">🙂</div>
+                <div>
+                  <p class="author-name">Sarah K.</p>
+                  <p class="author-location">Amsterdam, NL</p>
+                </div>
+              </div>
+            </article>
+          </li>
+        </ul>
+      </div>
+    </section>
+
+    <!-- ── NEWSLETTER ── -->
+    <section class="newsletter-section" aria-labelledby="newsletter-heading">
+      <div class="container">
+        <div class="newsletter-inner">
+          <p class="section-label" aria-hidden="true">Stay in touch</p>
+          <h2 class="newsletter-title" id="newsletter-heading">New pieces, rarely.<br/>Worth opening, always.</h2>
+          <p class="newsletter-desc">We send 4 emails a year — new arrivals, behind-the-scenes craft, and occasional offers. Never noise.</p>
+          <form class="newsletter-form" action="#" method="post" aria-label="Newsletter signup">
+            <label for="newsletter-email" class="sr-only">Email address</label>
+            <input
+              type="email"
+              id="newsletter-email"
+              name="email"
+              placeholder="your@email.com"
+              autocomplete="email"
+              required
+              aria-required="true"
+              aria-describedby="newsletter-note"
+            />
+            <button type="submit" class="btn btn-clay">Subscribe</button>
+          </form>
+          <p class="newsletter-note" id="newsletter-note">No spam. Unsubscribe any time. Read our <a href="#">Privacy Policy</a>.</p>
+        </div>
+      </div>
+    </section>
+
+    <!-- ── CONTACT ── -->
+    <section id="contact" class="contact-section" aria-labelledby="contact-heading">
+      <div class="container">
+        <div class="contact-grid">
+          <!-- Info -->
+          <div class="contact-info">
+            <p class="section-label" aria-hidden="true">Get in touch</p>
+            <h2 class="contact-info-title" id="contact-heading">We'd love to hear from you</h2>
+            <p class="contact-info-desc">Questions about a product, a custom order, or just want to see a piece in person? Our team responds within one business day.</p>
+            <address class="contact-details">
+              <div class="contact-detail">
+                <span class="contact-detail-icon" aria-hidden="true">📍</span>
+                <div>
+                  <p class="contact-detail-label">Studio</p>
+                  <p class="contact-detail-value">14 Maker's Lane, Copenhagen 1234, DK</p>
+                </div>
+              </div>
+              <div class="contact-detail">
+                <span class="contact-detail-icon" aria-hidden="true">✉️</span>
+                <div>
+                  <p class="contact-detail-label">Email</p>
+                  <p class="contact-detail-value"><a href="mailto:hello@forma.studio">hello@forma.studio</a></p>
+                </div>
+              </div>
+              <div class="contact-detail">
+                <span class="contact-detail-icon" aria-hidden="true">📞</span>
+                <div>
+                  <p class="contact-detail-label">Phone</p>
+                  <p class="contact-detail-value"><a href="tel:+4512345678">+45 12 34 56 78</a></p>
+                </div>
+              </div>
+              <div class="contact-detail">
+                <span class="contact-detail-icon" aria-hidden="true">🕐</span>
+                <div>
+                  <p class="contact-detail-label">Hours</p>
+                  <p class="contact-detail-value">Mon–Fri, 9am–5pm CET</p>
+                </div>
+              </div>
+            </address>
+          </div>
+
+          <!-- Form Card -->
+          <div class="contact-form-card">
+            <h3 class="form-title">Send a message</h3>
+            <form action="#" method="post" aria-label="Contact form" novalidate id="contact-form">
+              <div class="form-row">
+                <div class="form-group" id="group-first">
+                  <label for="first-name">First name <span class="required" aria-hidden="true">*</span></label>
+                  <input
+                    type="text"
+                    id="first-name"
+                    name="first_name"
+                    class="form-control"
+                    autocomplete="given-name"
+                    required
+                    aria-required="true"
+                    aria-describedby="first-name-error"
+                    placeholder="Jane"
+                  />
+                  <span class="form-error-msg" id="first-name-error" role="alert">Please enter your first name.</span>
+                </div>
+                <div class="form-group" id="group-last">
+                  <label for="last-name">Last name <span class="required" aria-hidden="true">*</span></label>
+                  <input
+                    type="text"
+                    id="last-name"
+                    name="last_name"
+                    class="form-control"
+                    autocomplete="family-name"
+                    required
+                    aria-required="true"
+                    aria-describedby="last-name-error"
+                    placeholder="Doe"
+                  />
+                  <span class="form-error-msg" id="last-name-error" role="alert">Please enter your last name.</span>
+                </div>
+              </div>
+
+              <div class="form-group" id="group-email">
+                <label for="contact-email">Email address <span class="required" aria-hidden="true">*</span></label>
+                <input
+                  type="email"
+                  id="contact-email"
+                  name="email"
+                  class="form-control"
+                  autocomplete="email"
+                  required
+                  aria-required="true"
+                  aria-describedby="email-error"
+                  placeholder="jane@example.com"
+                />
+                <span class="form-error-msg" id="email-error" role="alert">Please enter a valid email address.</span>
+              </div>
+
+              <div class="form-group">
+                <label for="subject">Subject</label>
+                <div class="form-select-wrap">
+                  <select id="subject" name="subject" class="form-control" aria-label="Select enquiry type">
+                    <option value="">Select a topic…</option>
+                    <option value="product">Product enquiry</option>
+                    <option value="order">Order status</option>
+                    <option value="custom">Custom order</option>
+                    <option value="trade">Trade programme</option>
+                    <option value="press">Press & media</option>
+                    <option value="other">Other</option>
+                  </select>
+                </div>
+              </div>
+
+              <div class="form-group" id="group-message">
+                <label for="message">Message <span class="required" aria-hidden="true">*</span></label>
+                <textarea
+                  id="message"
+                  name="message"
+                  class="form-control"
+                  rows="4"
+                  required
+                  aria-required="true"
+                  aria-describedby="message-error"
+                  placeholder="Tell us how we can help…"
+                ></textarea>
+                <span class="form-error-msg" id="message-error" role="alert">Please include a message.</span>
+              </div>
+
+              <div class="form-checkbox-group">
+                <input type="checkbox" id="privacy-agree" name="privacy" required aria-required="true" />
+                <label for="privacy-agree">
+                  I agree to the <a href="#">Privacy Policy</a> and consent to FORMA storing my data to respond to this enquiry.
+                  <span class="required" aria-hidden="true">*</span>
+                </label>
+              </div>
+
+              <button type="submit" class="btn btn-clay" style="width:100%;">
+                Send message
+                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" aria-hidden="true"><path d="M5 12h14m-7-7 7 7-7 7"/></svg>
+              </button>
+
+              <div class="form-success" id="form-success" role="status" aria-live="polite">
+                ✓ Message sent! We'll be in touch within one business day.
+              </div>
+            </form>
+          </div>
+        </div>
+      </div>
+    </section>
+
+  </main>
+
+  <!-- ══ FOOTER ══ -->
+  <footer class="site-footer" role="contentinfo">
+    <div class="container">
+      <div class="footer-grid">
+        <div class="footer-brand">
+          <p class="footer-brand-name">FORM<span>A</span></p>
+          <p class="footer-tagline">Objects made for deliberate living. Crafted in Europe since 2013.</p>
+          <nav aria-label="Social media links">
+            <ul class="social-links" role="list">
+              <li><a href="#" class="social-link" aria-label="FORMA on Instagram">Ig</a></li>
+              <li><a href="#" class="social-link" aria-label="FORMA on Pinterest">Pt</a></li>
+              <li><a href="#" class="social-link" aria-label="FORMA on LinkedIn">In</a></li>
+            </ul>
+          </nav>
+        </div>
+
+        <nav aria-label="Shop navigation">
+          <p class="footer-col-title">Shop</p>
+          <ul class="footer-links" role="list">
+            <li><a href="#">New Arrivals</a></li>
+            <li><a href="#">Seating</a></li>
+            <li><a href="#">Tables</a></li>
+            <li><a href="#">Lighting</a></li>
+            <li><a href="#">Objects</a></li>
+            <li><a href="#">Sale</a></li>
+          </ul>
+        </nav>
+
+        <nav aria-label="Customer support navigation">
+          <p class="footer-col-title">Support</p>
+          <ul class="footer-links" role="list">
+            <li><a href="#">Track Order</a></li>
+            <li><a href="#">Returns</a></li>
+            <li><a href="#">Repair Programme</a></li>
+            <li><a href="#">Care Guide</a></li>
+            <li><a href="#">FAQs</a></li>
+          </ul>
+        </nav>
+
+        <nav aria-label="Company information navigation">
+          <p class="footer-col-title">Company</p>
+          <ul class="footer-links" role="list">
+            <li><a href="#">Our Story</a></li>
+            <li><a href="#">Sustainability</a></li>
+            <li><a href="#">Trade Programme</a></li>
+            <li><a href="#">Press</a></li>
+            <li><a href="#contact">Contact</a></li>
+          </ul>
+        </nav>
+      </div>
+
+      <hr class="footer-divider" aria-hidden="true" />
+
+      <div class="footer-bottom">
+        <p>© 2025 FORMA Studio ApS. All rights reserved.</p>
+        <nav aria-label="Legal links">
+          <ul class="footer-legal" role="list">
+            <li><a href="#">Privacy Policy</a></li>
+            <li><a href="#">Terms of Service</a></li>
+            <li><a href="#">Cookie Settings</a></li>
+            <li><a href="#">Accessibility</a></li>
+          </ul>
+        </nav>
+      </div>
+    </div>
+  </footer>
+
+  <!-- ══ CART DRAWER ══ -->
+  <div class="cart-overlay" id="cart-overlay" role="presentation" aria-hidden="true"></div>
+  <aside
+    id="cart-drawer"
+    class="cart-drawer"
+    role="dialog"
+    aria-modal="true"
+    aria-label="Shopping cart"
+    aria-hidden="true"
+  >
+    <div class="cart-header">
+      <h2 class="cart-title">Your Cart (3)</h2>
+      <button class="cart-close" id="cart-close" aria-label="Close shopping cart">✕</button>
+    </div>
+    <div class="cart-body">
+      <p class="cart-empty">Your cart is loading…</p>
+    </div>
+    <div class="cart-footer">
+      <div class="cart-subtotal">
+        <span>Subtotal</span>
+        <strong>$1,195.00</strong>
+      </div>
+      <a href="#" class="btn btn-clay" style="width:100%;justify-content:center;" aria-label="Proceed to checkout with 3 items">Checkout</a>
+    </div>
+  </aside>
+
+  <!-- Visually hidden utility class -->
+  <style>.sr-only{position:absolute;width:1px;height:1px;padding:0;margin:-1px;overflow:hidden;clip:rect(0,0,0,0);white-space:nowrap;border-width:0;}</style>
+
+  <script>
+    // ── Cart Drawer ──
+    const cartToggle = document.getElementById('cart-toggle');
+    const cartClose  = document.getElementById('cart-close');
+    const cartDrawer = document.getElementById('cart-drawer');
+    const cartOverlay = document.getElementById('cart-overlay');
+
+    function openCart() {
+      cartDrawer.classList.add('open');
+      cartOverlay.classList.add('open');
+      cartDrawer.setAttribute('aria-hidden', 'false');
+      cartToggle.setAttribute('aria-expanded', 'true');
+      cartClose.focus();
+    }
+    function closeCart() {
+      cartDrawer.classList.remove('open');
+      cartOverlay.classList.remove('open');
+      cartDrawer.setAttribute('aria-hidden', 'true');
+      cartToggle.setAttribute('aria-expanded', 'false');
+      cartToggle.focus();
+    }
+
+    cartToggle.addEventListener('click', openCart);
+    cartClose.addEventListener('click', closeCart);
+    cartOverlay.addEventListener('click', closeCart);
+    document.addEventListener('keydown', e => { if (e.key === 'Escape') closeCart(); });
+
+    // ── Filter buttons ──
+    document.querySelectorAll('.filter-btn').forEach(btn => {
+      btn.addEventListener('click', function() {
+        document.querySelectorAll('.filter-btn').forEach(b => b.setAttribute('aria-pressed', 'false'));
+        this.setAttribute('aria-pressed', 'true');
+      });
+    });
+
+    // ── Wishlist toggle ──
+    document.querySelectorAll('.product-wishlist').forEach(btn => {
+      btn.addEventListener('click', function() {
+        const pressed = this.getAttribute('aria-pressed') === 'true';
+        this.setAttribute('aria-pressed', String(!pressed));
+        const name = this.getAttribute('aria-label').replace(/^(Add|Remove) /, '').replace(/ (to|from) wishlist$/, '');
+        this.setAttribute('aria-label', `${!pressed ? 'Remove' : 'Add'} ${name} ${!pressed ? 'from' : 'to'} wishlist`);
+        this.textContent = !pressed ? '♥' : '♡';
+        this.style.color = !pressed ? 'var(--clay)' : '';
+      });
+    });
+
+    // ── Contact Form Validation ──
+    const form = document.getElementById('contact-form');
+    form.addEventListener('submit', function(e) {
+      e.preventDefault();
+      let valid = true;
+
+      [['first-name','group-first'], ['last-name','group-last'], ['contact-email','group-email'], ['message','group-message']].forEach(([id, groupId]) => {
+        const input = document.getElementById(id);
+        const group = document.getElementById(groupId);
+        if (!input.value.trim() || (id === 'contact-email' && !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(input.value))) {
+          group.classList.add('error');
+          valid = false;
+        } else {
+          group.classList.remove('error');
+        }
+      });
+
+      if (valid) {
+        document.getElementById('form-success').style.display = 'block';
+        form.reset();
+      }
+    });
+
+    // Remove error on input
+    form.querySelectorAll('.form-control').forEach(input => {
+      input.addEventListener('input', function() {
+        this.closest('.form-group')?.classList.remove('error');
+      });
+    });
+  </script>
+</body>
+</html>
